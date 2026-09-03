@@ -3,110 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Pencatatan & Alat</title>
+    <title>Aplikasi Pencatatan</title>
     <style>
-        /* CSS Reset & Variabel */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; }
-
-        /* Efek Animasi Masuk (Splash Screen) */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; color: white;
-            animation: fadeOut 1s ease-in-out 2s forwards;
-        }
-        #splash-screen h1 { font-size: 3rem; animation: popIn 1s ease-out; }
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-
-        /* Layout Utama */
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        
-        /* Form & Input */
-        input, textarea, select, button { width: 100%; padding: 10px; margin-top: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; }
-        button { background: #667eea; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background: #764ba2; }
-
-        /* Tampilan Mode */
-        #login-view, #dashboard-view { display: none; }
-        .active-view { display: block !important; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Grid Dashboard */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .note-item { border-left: 4px solid #667eea; padding: 10px; background: #f9f9f9; margin-bottom: 10px; border-radius: 4px; }
-        
-        nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-danger { background: #ff4757; width: auto; padding: 10px 20px; }
+        /* CSS sama seperti sebelumnya, dipersingkat untuk fokus pada logika */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #f4f7f6; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; }
+        button { background: #667eea; color: white; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <h1>Selamat Datang</h1>
-        <p>Aplikasi Pencatatan & Produktivitas</p>
-    </div>
+    <!-- Load file simulasi env -->
+    <script src="env.js"></script>
 
-    <div class="container">
-        <div id="login-view" class="card active-view">
-            <h2>Login Aplikasi</h2>
-            <p style="margin-bottom: 15px; color: #666;">Gunakan akun admin (User: <b>admin</b>, Pass: <b>admin123</b>) untuk akses panel.</p>
-            <input type="text" id="login-username" placeholder="Username">
-            <input type="password" id="login-password" placeholder="Password">
-            <button onclick="login()">Masuk</button>
-        </div>
-
-        <div id="dashboard-view">
-            <nav>
-                <h2>Halo, <span id="user-display"></span>!</h2>
-                <div>
-                    <button id="btn-admin" style="display:none; width: auto; background: #2ed573;" onclick="window.location.href='argon.html'">Panel Admin</button>
-                    <button class="btn-danger" onclick="logout()">Logout</button>
-                </div>
-            </nav>
-
-            <div class="grid">
-                <div class="card">
-                    <h3>Catatan Baru</h3>
-                    <input type="text" id="note-title" placeholder="Judul Catatan">
-                    <textarea id="note-content" rows="4" placeholder="Isi catatan Anda..."></textarea>
-                    <button onclick="addNote()">Simpan Catatan</button>
-
-                    <h3 style="margin-top: 20px;">Daftar Catatan</h3>
-                    <div id="notes-list"></div>
-                </div>
-
-                <div class="card">
-                    <h3>Kalkulator Super</h3>
-                    <input type="number" id="calc-num1" placeholder="Angka Pertama">
-                    <select id="calc-op">
-                        <option value="+">Tambah (+)</option>
-                        <option value="-">Kurang (-)</option>
-                        <option value="*">Kali (×)</option>
-                        <option value="/">Bagi (÷)</option>
-                    </select>
-                    <input type="number" id="calc-num2" placeholder="Angka Kedua">
-                    <button onclick="calculate()">Hitung</button>
-                    <h2 id="calc-result" style="text-align: center; margin-top: 15px; color: #667eea;">Hasil: 0</h2>
-                </div>
-            </div>
-        </div>
+    <div class="card" id="login-view">
+        <h2>Login Aplikasi</h2>
+        <p style="font-size:12px; color:gray;">Info: Gunakan data dari env.js</p>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="login()">Masuk</button>
     </div>
 
     <script>
-        // Inisialisasi Database Lokal (Jika kosong)
+        // Gunakan variabel dari env.js untuk membuat akun admin default
         if (!localStorage.getItem('users')) {
-            const defaultUsers = [{ username: 'admin', password: 'admin123', role: 'admin' }];
+            const defaultUsers = [{ 
+                username: ENV.DEFAULT_ADMIN_USER, 
+                password: ENV.DEFAULT_ADMIN_PASS, 
+                role: 'admin' 
+            }];
             localStorage.setItem('users', JSON.stringify(defaultUsers));
         }
-        if (!localStorage.getItem('notes')) {
-            localStorage.setItem('notes', JSON.stringify([]));
-        }
 
-        // Fungsi Login
         function login() {
             const user = document.getElementById('login-username').value;
             const pass = document.getElementById('login-password').value;
@@ -115,95 +45,16 @@
             const validUser = users.find(u => u.username === user && u.password === pass);
             if (validUser) {
                 localStorage.setItem('currentUser', JSON.stringify(validUser));
-                checkAuth();
+                if(validUser.role === 'admin') {
+                    window.location.href = 'argon.html';
+                } else {
+                    alert("Berhasil login sebagai member!");
+                }
             } else {
                 alert('Username atau password salah!');
             }
         }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            checkAuth();
-        }
-
-        // Cek Status Login
-        function checkAuth() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (currentUser) {
-                document.getElementById('login-view').classList.remove('active-view');
-                document.getElementById('dashboard-view').classList.add('active-view');
-                document.getElementById('user-display').innerText = currentUser.username;
-                
-                // Tampilkan tombol admin jika rolenya admin
-                if (currentUser.role === 'admin') {
-                    document.getElementById('btn-admin').style.display = 'inline-block';
-                } else {
-                    document.getElementById('btn-admin').style.display = 'none';
-                }
-                loadNotes();
-            } else {
-                document.getElementById('dashboard-view').classList.remove('active-view');
-                document.getElementById('login-view').classList.add('active-view');
-            }
-        }
-
-        // Fitur Catatan
-        function addNote() {
-            const title = document.getElementById('note-title').value;
-            const content = document.getElementById('note-content').value;
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-            if (!title || !content) return alert("Isi judul dan konten!");
-
-            const notes = JSON.parse(localStorage.getItem('notes'));
-            notes.push({ id: Date.now(), author: currentUser.username, title, content });
-            localStorage.setItem('notes', JSON.stringify(notes));
-            
-            document.getElementById('note-title').value = '';
-            document.getElementById('note-content').value = '';
-            loadNotes();
-        }
-
-        function loadNotes() {
-            const notes = JSON.parse(localStorage.getItem('notes'));
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const list = document.getElementById('notes-list');
-            list.innerHTML = '';
-
-            // Filter catatan hanya untuk user yang login (kecuali admin bisa lihat semua)
-            const userNotes = currentUser.role === 'admin' ? notes : notes.filter(n => n.author === currentUser.username);
-
-            userNotes.forEach(note => {
-                list.innerHTML += `
-                    <div class="note-item">
-                        <h4>${note.title} <small>(${note.author})</small></h4>
-                        <p>${note.content}</p>
-                    </div>
-                `;
-            });
-        }
-
-        // Fitur Kalkulator
-        function calculate() {
-            const num1 = parseFloat(document.getElementById('calc-num1').value);
-            const num2 = parseFloat(document.getElementById('calc-num2').value);
-            const op = document.getElementById('calc-op').value;
-            let result = 0;
-
-            if (isNaN(num1) || isNaN(num2)) return alert("Masukkan angka yang valid!");
-
-            switch(op) {
-                case '+': result = num1 + num2; break;
-                case '-': result = num1 - num2; break;
-                case '*': result = num1 * num2; break;
-                case '/': result = num2 !== 0 ? num1 / num2 : 'Error (Bagi 0)'; break;
-            }
-            document.getElementById('calc-result').innerText = 'Hasil: ' + result;
-        }
-
-        // Jalankan saat load
-        setTimeout(() => checkAuth(), 2500); // Tunggu animasi selesai
     </script>
 </body>
-  </html>
+</html>
 
